@@ -51,8 +51,28 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     steps:
-        - name: Set up Syft
-          uses: anchore/sbom-action@v0
-          with: 
-            image: '${{ vars.DOCKERHUB_USERNAME }}/isen-python:latest'
-            format: 'syft-json'
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with: 
+          image: '${{ vars.DOCKERHUB_USERNAME }}/isen-python:latest'
+          format: 'syft-json'
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: isen-python.syft.json  # <- ce nom est important !
+
+  grype:
+    needs: syft
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download SBOM
+        uses: actions/download-artifact@v3
+        with:
+          name: sbom
+
+      - name: Scan SBOM
+        uses: anchore/scan-action@v6
+        with:
+          sbom: isen-python.syft.json
