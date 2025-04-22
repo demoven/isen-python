@@ -77,6 +77,11 @@ jobs:
 
       - name: Scan SBOM with Grype
         continue-on-error: true
-        uses: anchore/scan-action@v6
+        run: |
+          grype sbom:syft.sbom.json -o sarif > grype-results.sarif
+
+      - name: Upload Grype report
+        uses: actions/upload-artifact@v4
         with:
-          sbom: 'syft.sbom.json'
+          name: grype-scan-report
+          path: grype-results.sarif
