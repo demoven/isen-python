@@ -2,8 +2,6 @@
 
 FROM python:3.9-slim-buster
 
-USER nonroot
-
 WORKDIR /app
 
 COPY requirements.txt .
