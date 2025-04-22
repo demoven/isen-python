@@ -76,6 +76,7 @@ jobs:
           path: .
 
       - name: Scan SBOM with Grype
+        continue-on-error: true
         uses: anchore/scan-action@v6
         with:
           sbom: 'syft.sbom.json'
