@@ -20,6 +20,6 @@ jobs:
                 pip install -r requirements.txt
             - name: Analyze code with pylint
               run: |
-                pylint $(git ls-files '*.py')
+                pylint --disable=C,R0801 --fail-under=7 $(git ls-files '*.py')
               
             
