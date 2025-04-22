@@ -47,3 +47,12 @@ jobs:
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
           skip-setup-trivy: true
+  syft:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+        - name: Set up Syft
+          uses: anchore/sbom-action@v0
+          with: 
+            image: '${{ vars.DOCKERHUB_USERNAME }}/isen-python:latest'
+            format: 'syft-json'
