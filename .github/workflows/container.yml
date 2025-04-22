@@ -54,14 +54,14 @@ jobs:
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
         with: 
-          image: '${{ vars.DOCKERHUB_USERNAME }}/isen-python:latest'
+          image: "isen-python"
           format: 'syft-json'
 
       - name: Upload SBOM
         uses: actions/upload-artifact@v4
         with:
           name: sbom
-          path: isen-python.syft.json  # <- ce nom est important !
+          path: isen-python.syft-json  # <- ce nom est important !
 
   grype:
     needs: syft
@@ -75,4 +75,4 @@ jobs:
       - name: Scan SBOM
         uses: anchore/scan-action@v6
         with:
-          sbom: isen-python.syft.json
+          sbom: isen-python.syft-json
