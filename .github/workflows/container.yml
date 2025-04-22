@@ -58,7 +58,7 @@ jobs:
           format: 'syft-json'
 
       - name: Upload SBOM
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sbom
           path: isen-python.syft.json  # <- ce nom est important !
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download SBOM
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sbom
 
