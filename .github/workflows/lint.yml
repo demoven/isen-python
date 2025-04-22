@@ -1,4 +1,4 @@
-name: Pylint
+name: Pylint and Hadolint
 
 on: [push]
 
@@ -21,5 +21,14 @@ jobs:
             - name: Analyze code with pylint
               run: |
                 pylint --disable=C,R0801 --fail-under=7 $(git ls-files '*.py')
-              
+    hadolint:
+        runs-on: ubuntu-latest
+        name: hadolint
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Lint Dockerfile
+              uses: hadolint/hadolint-action@master
+              with:
+                dockerfile: "Dockerfile"   
             
