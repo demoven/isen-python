@@ -59,3 +59,31 @@ def test_home_route():
     assert response.status_code == 200
     assertTemplateUsed(response, 'home.html')
     assert HomeView.model == Product
+
+
+@pytest.mark.django_db
+def test_home_sorting():
+
+    """
+    Test d'intégration pour vérifier que la vue HomeView trie correctement les produits
+    par prix croissant et décroissant en fonction du paramètre 'sort'.
+    """
+
+    # Création de produits pour le test
+    Product.objects.create(name="Produit A", price=10.0)
+    Product.objects.create(name="Produit B", price=20.0)
+    Product.objects.create(name="Produit C", price=15.0)
+
+    # Test tri par prix croissant
+    response_asc = CLIENT.get(reverse('home') + '?sort=asc')
+    assert response_asc.status_code == 200
+    assertTemplateUsed(response_asc, 'home.html')
+    products_asc = list(response_asc.context['object_list'])
+    assert [product.price for product in products_asc] == [10.0, 15.0, 20.0]
+
+    # Test tri par prix décroissant
+    response_desc = CLIENT.get(reverse('home') + '?sort=desc')
+    assert response_desc.status_code == 200
+    assertTemplateUsed(response_desc, 'home.html')
+    products_desc = list(response_desc.context['object_list'])
+    assert [product.price for product in products_desc] == [20.0, 15.0, 10.0]
