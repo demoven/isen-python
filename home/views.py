@@ -17,5 +17,11 @@ class HomeView(ListView):
     template_name = 'home.html'
     model = Product
 
-    def get(self, request):
-        return super().get(request)
+    def get_queryset(self):
+        """
+        Override get_queryset to apply sorting logic
+        """
+        sort_order = self.request.GET.get('sort', 'asc')
+        if sort_order == 'desc':
+            return Product.objects.all().order_by('-price')
+        return Product.objects.all().order_by('price')
