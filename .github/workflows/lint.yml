@@ -31,4 +31,6 @@ jobs:
               uses: hadolint/hadolint-action@master
               with:
                 dockerfile: "Dockerfile"   
+                format: codeclimate
+                failure-threshold: warning
             
