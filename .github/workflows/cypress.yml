@@ -5,6 +5,9 @@ on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+    name: Run Cypress tests
+    env:
+        SECRET_PRODUCTION_KEY: ${{ secrets.SECRET_PRODUCTION_KEY }}
 
     steps:
       - name: Checkout repository
