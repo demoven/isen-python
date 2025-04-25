@@ -48,26 +48,16 @@ jobs:
           severity: 'CRITICAL,HIGH'
           skip-setup-trivy: true
 
-  syft:
+  sbom:
     needs: docker
     runs-on: ubuntu-latest
     steps:
       - name: Generate SBOM with Syft
         uses: anchore/sbom-action@v0
-        with: 
+        with:
           image: '${{ vars.DOCKERHUB_USERNAME }}/isen-python:latest'
           format: 'spdx-json'
           output-file: 'sbom.spdx.json'
-
-  grype:
-    needs: syft
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download SBOM artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: 'sbom.spdx.json'
-          path: .
 
       - name: Scan SBOM with Grype
         continue-on-error: true
@@ -76,6 +66,7 @@ jobs:
           sbom: 'sbom.spdx.json'
           output-format: 'sarif'
           output-file: 'grype-results.sarif'
+
       - name: Upload Grype results
         uses: actions/upload-artifact@v4
         with:
