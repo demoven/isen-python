@@ -30,7 +30,6 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: false 
           wait-on: 'http://localhost:8080'
           wait-on-timeout: 60
           config: baseUrl=http://localhost:8080
