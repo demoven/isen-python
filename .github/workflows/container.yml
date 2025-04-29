@@ -125,8 +125,6 @@ jobs:
         project_id: 'essential-oasis-458315-b4'
         env_vars: |
           SECRET_PRODUCTION_KEY=${{ secrets.SECRET_PRODUCTION_KEY }}
-          DEBUG=False
-          PORT=8080
 
     - name: 'Use output'
       run: 'curl "${{ steps.deploy.outputs.url }}"'
