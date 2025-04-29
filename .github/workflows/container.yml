@@ -1,6 +1,8 @@
 name: Container registry
 
-on: [push]
+on: 
+  push:
+      branches: [ main ]
 
 jobs:
   docker:
@@ -72,3 +74,53 @@ jobs:
         with:
           name: grype-results
           path: grype-results.sarif
+  gcr:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up GCloud credentials
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}' 
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker europe-west1-docker.pkg.dev --quiet
+
+      - name: Pull image from Docker Hub
+        run: |
+          docker pull ${{ vars.DOCKERHUB_USERNAME }}/isen-python:latest
+
+      - name: Tag image for Google Artifact Registry
+        run: |
+          docker tag ${{ vars.DOCKERHUB_USERNAME }}/isen-python:latest europe-west1-docker.pkg.dev/essential-oasis-458315-b4/isen-python-app/isen-python:latest
+
+      - name: Push to Google Artifact Registry
+        run: |
+          docker push europe-west1-docker.pkg.dev/essential-oasis-458315-b4/isen-python-app/isen-python:latest
+
+  deployment:
+    needs: gcr
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout repository
+      uses: 'actions/checkout@v4'
+
+    - name: Set up Google Cloud credentials
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}' 
+
+    - name: Deploy to Cloud Run
+      id: 'deploy'
+      uses: 'google-github-actions/deploy-cloudrun@v2'
+      with:
+        service: 'python-app'
+        image: 'europe-west1-docker.pkg.dev/essential-oasis-458315-b4/isen-python-app/isen-python:latest'
+
+    - name: 'Use output'
+      run: 'curl "${{ steps.deploy.outputs.url }}"'
