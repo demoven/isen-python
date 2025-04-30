@@ -147,5 +147,7 @@ jobs:
         continue-on-error: true
         with: 
           target: '${{ needs.deployment.outputs.url }}'
-          artifact_name: 'zap-results'
+          artifact_name: 'zap-results.json'
+          allow_issue_writing: false
+          cmd_options: '--auto'
 
