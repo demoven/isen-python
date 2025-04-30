@@ -105,6 +105,9 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
+    outputs:
+        url: ${{ steps.deploy.outputs.url }}  
+    
 
     steps:
     - name: Checkout repository
@@ -142,6 +145,6 @@ jobs:
       - name: Run ZAP scan
         uses: zaproxy/action-baseline@v0.14.0
         with: 
-          target: '${{ steps.deploy.outputs.url }}'
+          target: '${{ needs.deployment.outputs.url }}'
           artifact_name: 'zap-results.json'
 
