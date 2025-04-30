@@ -129,20 +129,19 @@ jobs:
     - name: 'Use output'
       run: 'curl "${{ steps.deploy.outputs.url }}"'
   zap:
-    needs: docker
+    needs: deployment
     runs-on: ubuntu-latest
-    steps:
+    steps: 
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Run the app in background
-       
-        run: |
-          docker run -d -p 8080:8080 ${{ vars.DOCKERHUB_USERNAME }}/isen-python:latest
-          sleep 10
-      - name: Zap scan
-        uses: zaproxy/action-baseline@v0.14.0
+      - name: Set up Google Cloud credentials
+        uses: 'google-github-actions/auth@v2'
         with:
-          target: 'http://localhost:8080'
-          format: 'json'
-          
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+      
+      - name: Run ZAP scan
+        uses: zaproxy/action-baseline@v0.14.0
+        with: 
+          target: '${{ steps.deploy.outputs.url }}'
+          artifact_name: 'zap-results.json'
+
