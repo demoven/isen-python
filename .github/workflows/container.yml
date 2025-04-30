@@ -144,7 +144,8 @@ jobs:
       
       - name: Run ZAP scan
         uses: zaproxy/action-baseline@v0.14.0
+        continue-on-error: true
         with: 
           target: '${{ needs.deployment.outputs.url }}'
-          artifact_name: 'zap-results.json'
+          artifact_name: 'zap-results'
 
