@@ -1,32 +1,59 @@
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+# ISEN Python Project 🐍
 
-# Django-Test-Project
+**Educational Project | CI/CD & Testing Implementation**
 
-Ce projet a été implémenté dans le but de s'entrainer aux différentes formes de tests. Le code source contient un projet Django(un mini site e-commerce). Vous pourrez ainsi développer l'ensemble des scénarios nécessaires afin de tester l'ensemble du code source.
+This repository contains a Django web application provided by a professor as a base for an advanced software engineering exercise.
 
-## Pré-requis
+**My Contribution:**
+While the core application logic was provided, my role in this project was to design and implement the entire **Quality Assurance and DevOps ecosystem**. I was responsible for setting up the **CI/CD pipelines** using GitHub Actions and writing the comprehensive **Test Suites** (Unit, Integration, and E2E) to ensure the robustness of the application.
 
-* Installer Python 3 : [Téléchargement Python 3](https://www.python.org/downloads/)
-* Installer git : [Téléchargement Git](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git)
+## 🎯 Educational Goal
 
-### Mettre en place un environnement virtuel
+The main objective of this repository is to demonstrate a complete software automation chain on an existing codebase. The business logic serves as a context to experiment with:
 
-* Créer l'environnement virtuel: `python3 -m venv venv`
-* Activer l'environnement virtuel :
-  * Windows : `venv\Scripts\activate.bat`
-  * Unix/MacOS : `source venv/bin/activate`
+* **GitHub Actions**: Configuration of complex workflows from scratch.
+* **Unit & Integration Tests**: Writing tests for the Python/Django backend using `pytest`.
+* **E2E (End-to-End) Tests**: Implementing user interface scenarios with **Cypress**.
+* **Code Quality (Linting)**: Automating style checks and static analysis.
+* **Security (SAST)**: Integrating security scanning tools.
+* **Containerization**: Dockerizing the application for deployment.
 
-### Installer les dépendances du projet
+## ⚙️ CI/CD Pipelines (My Implementation)
 
+I integrated several GitHub Actions workflows located in `.github/workflows/`:
+
+| Workflow | Description |
+| :--- | :--- |
+| **Lint** (`lint.yml`) | Checks code quality (PEP8, syntax errors). |
+| **Tests Backend** (`tests.yml`) | Runs unit and integration tests using `pytest`. |
+| **Tests E2E** (`cypress.yml`) | Runs user interface tests with Cypress. |
+| **Security** (`sast.yml`) | Analyzes code to detect security vulnerabilities (SAST). |
+| **Container** (`container.yml`) | Builds the application's Docker image. |
+
+## 🧪 Testing Strategy
+
+I implemented a complete testing pyramid to cover the provided code:
+
+1.  **Unit Tests** (`unit_tests/`): Test models, URLs, and forms in isolation.
+2.  **Integration Tests** (`integration_tests/`): Verify interactions between components (e.g., authentication flow, adding favorites).
+3.  **End-to-End Tests** (`cypress/e2e/`): Simulate a real user's journey in the browser (Login, Navigation, Filters).
+
+## ✨ App Features (Base Project)
+
+The provided Django application includes the following features:
+
+* **Authentication**: Registration, Login, Profile management.
+* **Catalog**: Display a list of products.
+* **Favorites**: Ability for a logged-in user to add products to their favorites.
+* **Back-office**: Django administration interface to manage users and products.
+
+## 🛠️ Tech Stack
+
+* **Backend**: Python 3, Django
+* **Frontend**: HTML5, CSS3, JavaScript
+* **Database**: SQLite (default)
+* **Tests**: Pytest, Cypress
+* **CI/CD**: GitHub Actions, Docker
+**Backend Tests (Pytest):**
 ```bash
-pip install -r requirements.txt
-```
-
-## Démarrage
-
-* Lancer le serveur à l'aide de la commande suivante :
-`python manage.py runserver`
-
-## Reference
-
-Source from <https://github.com/OpenClassrooms-Student-Center/4425126-testing-python-django>
+pytest
