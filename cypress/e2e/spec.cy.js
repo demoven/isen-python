@@ -50,7 +50,7 @@ describe('Put item in favourite', () => {
     // You will go to favourite pages to confirm item is here
     cy.contains('FAVOURITE').click()
 
-    // You will then delete the item an check it has been successfully deleted
+    // You will then delete the item an check it has been successfully deleted d
     cy.get('.table').find('tbody').find('tr').find('td').last().click()
 
     
